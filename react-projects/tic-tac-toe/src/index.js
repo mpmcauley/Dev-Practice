@@ -68,9 +68,9 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    const coordinates = `(${i % 3}, ${Math.floor(i/3)})`;
 
-    console.log(this.state.history)
+    // caculates coordinates
+    const coordinates = `(${i % 3}, ${Math.floor(i/3)})`;
 
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -100,9 +100,11 @@ class Game extends React.Component {
       const desc = move ?
       `Go to move #${move} - ${history[move].location}` :
       `Go to game start`;
+      // calculates the last move -> this will effect styling
+      const lastMove = history.length - 1 === move;
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button style={lastMove ? {fontWeight: 'bold'} : {}}onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       )
     })
