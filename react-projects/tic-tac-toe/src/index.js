@@ -17,7 +17,7 @@ const Square = props => {
 
 // Board Component
 class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(i, row, column) {
     return (
       <Square
         value={this.props.squares[i]}
@@ -56,6 +56,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+        location: null,
       }],
       stepNumber: 0,
       xIsNext: true,
@@ -67,6 +68,10 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
+    const coordinates = `(${i % 3}, ${Math.floor(i/3)})`;
+
+    console.log(this.state.history)
+
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
@@ -74,6 +79,7 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares: squares,
+        location: coordinates,
       }]),
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
@@ -92,7 +98,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-      `Go to move #${move}` :
+      `Go to move #${move} - ${history[move].location}` :
       `Go to game start`;
       return (
         <li key={move}>
