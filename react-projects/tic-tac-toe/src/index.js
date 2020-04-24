@@ -17,32 +17,35 @@ const Square = props => {
 
 // Board Component
 class Board extends React.Component {
-  renderSquare(i, row, column) {
+  renderSquare(i) {
     return (
       <Square
+        key={i}
         value={this.props.squares[i]}
         onClick={() => {this.props.onClick(i)}}
       />
     )
   }
+  renderBoard(rows, columns) {
+    const table = [];
+    let rowArr = [];
+    const boardArr = [];
+    for (let row=0; row<rows; row++) {
+      for (let column=0; column< columns; column++) {
+        let coordinate = 3 * row + column;
+        let square = this.renderSquare(coordinate);
+        rowArr.push(square);
+      }
+      boardArr.push(rowArr);
+      rowArr = [];
+      table.push(<div key={`row_${row}`}className="board-row">{boardArr[row]}</div>);
+    }
+    return table;
+  }
   render() {
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {this.renderBoard(3,3)}
       </div>
     );
   }
